@@ -1,0 +1,45 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: workforce-hrms
+  datasource:
+    hikari:
+      pool-name: HRM-Hikari-Pool
+      minimum-idle: 2
+      maximum-pool-size: 5
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 10000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+app:
+  jwt:
+    secret: 9a6763c3132646b0a0bb5c389814470bc65df4bcf54b1f58b73f88f00155b4129528bc41ff9197c38fc7d9c6d482c3c6f40b2f56b0632d4b9687e174780517be
+    expiration-ms: 86400000 # 24 hours
+    refresh-expiration-ms: 604800000 # 7 days
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:5173
+  sms:
+    provider-key: mock-sms-key-12345
+  external-api:
+    gov-wage-url: https://api.mock.gov/wage-rates
+    timeout-ms: 5000
+
+logging:
+  level:
+    root: INFO
+    com.hrm.workforce: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

@@ -1,0 +1,26 @@
+# Maven Build Target
+target/
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Log files
+*.log
+logs/
+
+# IDE and Project Tooling
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.factorypath
+bin/
+out/
+.vscode/
+
+# System Files
+.DS_Store
+Thumbs.db

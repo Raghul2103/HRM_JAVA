@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/hrm_db_staging}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: HRM-Hikari-Pool-Staging
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 1800000 # 30 mins, shorter than Supabase 1 hour idle disconnect
+      keepalive-time: 30000 # Send select 1 keepalive query every 30s to keep it alive in Supabase
+      connection-timeout: 10000
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update

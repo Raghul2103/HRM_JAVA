@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://db.aiivyhgqxnzatbbxxwin.supabase.co:5432/postgres
+    username: postgres
+    password: HRM_JAVA123
+    driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: well-bear-135766.upstash.io
+      port: 6379
+      password: gQAAAAAAAhJWAAIgcDE5ZmI2ZjgzZmUzNmE0NDdhODc5NWExNWI3MDk4OTVjOA
+      timeout: 1000
+      lettuce:
+        shutdown-timeout: 100
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
