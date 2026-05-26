@@ -147,3 +147,16 @@ curl -X GET "http://localhost:8080/api/overtime/summary/1?month=2026-04" \
 curl -X POST "http://localhost:8080/api/overtime/settle/1?month=2026-04" \
   -H "Authorization: Bearer <JWT_TOKEN>"
 ```
+
+---
+
+## 6. Complete Postman Collection
+A full Postman collection covering all CRUD resources (Workers, Sites, Attendance, Overtime, and Authentication) is exported in the root directory:
+* **Collection File**: [hrms_postman_collection.json](file:///c:/projects/HRM_JAVA/HRM/hrms_postman_collection.json)
+
+**How to Use:**
+1. Import `hrms_postman_collection.json` into Postman.
+2. The collection has pre-defined variables:
+   - `base_url`: Defaults to `http://localhost:8080` (change if deploying to staging/production).
+   - `jwt_token`: Used dynamically across all authenticated requests.
+3. Run the **Login** request inside the **Authentication** folder first, copy the `token` value from the response body, and paste it into the `jwt_token` variable in your collection settings.
