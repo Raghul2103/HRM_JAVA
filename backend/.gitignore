@@ -9,6 +9,8 @@ target/
 # Log files
 *.log
 logs/
+application-local.yml
+application-local.properties
 
 # IDE and Project Tooling
 .idea/

@@ -1,14 +1,16 @@
 spring:
+  config:
+    import: "optional:classpath:application-local.yml"
   datasource:
-    url: jdbc:postgresql://db.aiivyhgqxnzatbbxxwin.supabase.co:5432/postgres
-    username: postgres
-    password: HRM_JAVA123
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:}
     driver-class-name: org.postgresql.Driver
   data:
     redis:
-      host: well-bear-135766.upstash.io
-      port: 6379
-      password: gQAAAAAAAhJWAAIgcDE5ZmI2ZjgzZmUzNmE0NDdhODc5NWExNWI3MDk4OTVjOA
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
       timeout: 1000
       lettuce:
         shutdown-timeout: 100

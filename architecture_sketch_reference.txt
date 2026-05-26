@@ -1,0 +1,91 @@
+===========================================================================================
+               CONSTRUCTION HRMS - PHYSICAL HAND-DRAWN SKETCH REFERENCE
+===========================================================================================
+
+  Directions for your drawing:
+  - Take a blank white sheet of paper (landscape orientation).
+  - Use blue/black ink for components and red/green colors for highlights.
+  - Draw the boxes and figures below directly onto your paper.
+
+-------------------------------------------------------------------------------------------
+1. TOP ROW: THE HUMANS (Draw these first)
+-------------------------------------------------------------------------------------------
+
+   [Draw stick figure with safety helmet]      [Draw figure at desk with computer]
+   "SUPERVISOR IN THE SUN" 🤠                  "PAYROLL OPERATOR AT MONTH-END" 💻
+   Speech bubble:                              Speech bubble:
+   "Need to clock-in 40 workers                "Calculations must be 100% accurate!
+   fast! The system cannot lag!"               Wages depend on these overtime logs."
+        |                                           |
+        | (Selects Worker & Site)                   | (Clicks 'Settle Month')
+        v                                           v
+
+-------------------------------------------------------------------------------------------
+2. MIDDLE ROW: THE APPLICATION SYSTEM
+-------------------------------------------------------------------------------------------
+
+   +-------------------------------------------------------------------------------------+
+   |  FRONTEND UI (React & Tailwind CSS)                                                 |
+   |  - Sends JWT tokens with Axios requests                                             |
+   +-------------------------------------------------------------------------------------+
+        |
+        v (REST JSON Requests)
+   +-------------------------------------------------------------------------------------+
+   |  REST CONTROLLER LAYER (Spring Security Filters)                                    |
+   |  - Enforces roles (e.g., ADMIN, HR, SITE_SUPERVISOR, PAYROLL)                       |
+   +-------------------------------------------------------------------------------------+
+        |
+        v
+   +-------------------------------------------------------------------------------------+
+   |  [ DRAW A THICK BORDER AROUND THIS BOX ]                                            |
+   |  TRANSACTIONAL SERVICE LAYER                                                        |
+   |  Annotated with: @Transactional(rollbackFor = Exception.class)                     |
+   |                                                                                     |
+   |  "All-or-Nothing Settlement Engine"                                                 |
+   |  - Processes month's logs. If 1/22 logs fail, everything rolls back atomically!    |
+   |                                                                                     |
+   |  - (Envelope Icon) Event Publisher -> publishes 'OvertimeSettledEvent'              |
+   +-------------------------------------------------------------------------------------+
+        |                                           |
+        | (Saves Log / Queries Logs)                | (Dispatches Event on DB Commit)
+        v                                           v
+
+-------------------------------------------------------------------------------------------
+3. BOTTOM ROW: INFRASTRUCTURE & DECISION ANNOTATIONS
+-------------------------------------------------------------------------------------------
+
+  [RED HIGHLIGHT BOX]                         [DASHED EVENT LINE ROUTE]
+  +-------------------------------------+     +-------------------------------------+
+  | REDIS ACTIVE CACHE (Port 6379)      |     | AFTER-COMMIT SMS SERVICE            |
+  | - TTL: 16 Hours. Missed clock-outs  |     | @TransactionalEventListener         |
+  |   expire automatically.             |     | (phase = TransactionPhase.          |
+  | - Cache Fallback: If Redis fails,   |     |           AFTER_COMMIT)             |
+  |   app degrades to DB queries.       |     +-------------------------------------+
+  +-------------------------------------+                       |
+        ^                                                       v
+        | (Reads active workers)                       [Draw happy worker figure]
+        |                                              "WORKER RECEIVES TEXT" 👷
+        |                                              SMS: "Your ₹4200 overtime is settled."
+        v
+  [GREEN HIGHLIGHT BOX]
+  +-------------------------------------------------------------------------------------+
+  | HIKARI CONNECTION POOL                                                              |
+  | - keepalive-time: 30s heartbeats keep Supabase staging connections warm.            |
+  | - Connect timeouts set to 5000ms. Government API calls run in controller before     |
+  |   transaction, preventing DB pool starvation during network I/O.                    |
+  +-------------------------------------------------------------------------------------+
+        |
+        v (Database Queries / JPA Repository)
+  +-------------------------------------------------------------------------------------+
+  | SUPABASE POSTGRESQL DATABASE (Port 6543 - PgBouncer)                                |
+  | - Schema: users, workers, sites, attendance_logs, overtime_entries.                 |
+  | - N+1 Query Fixed: 'JOIN FETCH' loads relations in 1 SQL query, not 50,000+!       |
+  +-------------------------------------------------------------------------------------+
+
+===========================================================================================
+                      KEY DECISIONS TO ANNOTATE ON YOUR SHEET
+===========================================================================================
+* Decoupled I/O: External API and SMS runs outside transactional locks.
+* Cache Fallback: App operates normally even during Redis maintenance windows.
+* Capping (60h max): Cost-control business rule enforced during shift clock-out.
+===========================================================================================
